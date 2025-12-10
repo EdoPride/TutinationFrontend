@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import{useNavigate} from "react-router-dom";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -10,7 +11,7 @@ export default function Register() {
   });
 
   const [error, setError] = useState("");
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -44,13 +45,17 @@ export default function Register() {
       const res = await fetch("http://localhost:5173/api/Auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+      body: JSON.stringify(payload)
+
       });
 
       const data = await res.json();
       console.log("REGISTER RESULT:", data);
 
       alert("Registration Successful!");
+      setTimeout(() => {
+        navigate("/login");
+      }, 800);
 
     } catch (err) {
       console.error(err);

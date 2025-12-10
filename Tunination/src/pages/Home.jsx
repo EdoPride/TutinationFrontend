@@ -9,6 +9,9 @@ import OjbrownDance1 from "../assets/ojbrownDance1.mp4";
 import highlight1 from "../assets/ojbrown4.jpeg";
 import highlight2 from "../assets/ojbrown5.jpeg";
 import highlight3 from "../assets/ojbrown7.jpeg";  
+import Navbar from "../component/Navbar";
+import NavbarUser from "../component/NavbarUser";
+import NavbarAdmin from "../component/NavbarAdmin";
 export default function Home() {
   const slides = [
     {
@@ -37,7 +40,20 @@ export default function Home() {
     },
   ];
 
+  
   const [current, setCurrent] = useState(0);
+ const [role, setRole] = useState(null);
+const updateRole = (newRole) => {
+  setRole(newRole);
+};
+
+  useEffect(() => {
+      const savedUser = localStorage.getItem("user");
+      if (savedUser) {
+          const parsed = JSON.parse(savedUser);
+          setRole(parsed?.role ?? null);
+      }
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -51,6 +67,15 @@ export default function Home() {
 
   return (
     <>
+     {/* Auto updates when role changes */}
+          {role === "Admin" ? (
+            <NavbarAdmin />
+          ) : role === "User" ? (
+            <NavbarUser />
+          ) : (
+            <Navbar />
+          )}
+      
       {/* ================= HERO SECTION ================= */}
       <div className="relative w-full h-screen overflow-hidden bg-black">
 
