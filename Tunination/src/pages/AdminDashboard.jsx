@@ -64,16 +64,18 @@ useEffect(() => {
               </div>
 
               <div className="flex justify-between items-center pb-3 border-b border-[#242424]">
-                <p className="text-gray-300">Approve new registrations</p>
-                <button className="px-4 py-1 bg-blue-600 hover:bg-blue-700 rounded-md text-sm">
-                  Review
+                <p className="text-gray-300">Appointment Overview</p>
+                <button className="px-4 py-1 bg-blue-600 hover:bg-blue-700 rounded-md text-sm"
+                onClick={()=> navigate("/Appointment-Overview")}>
+                     Check Appointment 
                 </button>
               </div>
 
               <div className="flex justify-between items-center">
-                <p className="text-gray-300">Ban or suspend accounts</p>
-                <button className="px-4 py-1 bg-yellow-600 hover:bg-yellow-700 rounded-md text-sm">
-                  Manage
+                <p className="text-gray-300">Payment Overview</p>
+                <button className="px-4 py-1 bg-yellow-600 hover:bg-yellow-700 rounded-md text-sm"
+                onClick={()=> navigate("/Payment-Link")}>
+                     Manage
                 </button>
               </div>
             </div>
