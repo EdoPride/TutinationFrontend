@@ -16,7 +16,8 @@ import Ticket from "./pages/Ticket";
 import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AddEvents from "./pages/AddEvents";
-
+import AppointmentOverview from "./pages/AppointmentOverview";
+import PaymentLink from "./pages/PaymentLink";
 const UserRoute = ({ children }) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -86,7 +87,23 @@ const updateRole = (newRole) => {
     </AdminRoute>
   }
 />
-
+        <Route 
+  path="/Appointment-Overview" 
+  element={
+    <AdminRoute>
+      <AppointmentOverview />
+    </AdminRoute>
+  }
+   
+/>
+   <Route 
+  path="/Payment-Link" 
+  element={
+    <AdminRoute>
+      <PaymentLink  />
+    </AdminRoute>
+  }
+/>
       </Routes>
 
       <Footer />

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NavbarAdmin from "../component/NavbarAdmin";
+import api from "../api/axios";
 export default function PaymentLink() {
     const [links, setLinks] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -48,10 +49,7 @@ export default function PaymentLink() {
         formData.append("PodcastPaymentLink", podcast);
         formData.append("StudioPaymentLink", studio);
 
-        const res = await fetch("http://localhost:5173/api/PaymentLink/Add-PaymentLink", {
-            method: "POST",
-            body: formData,
-        });
+        const res = await api.post("/PaymentLink/Add-PaymentLink", formData);
 
         if (res.ok) {
             alert("Payment links created!");
@@ -63,10 +61,7 @@ export default function PaymentLink() {
         const formData = new FormData();
         formData.append("PodcastPaymentLink", podcast);
 
-        await fetch(`http://localhost:5173/api/PaymentLink/Update-PodcastPaymentLink/${links.id}`, {
-            method: "PUT",
-            body: formData,
-        });
+        await api.putForm(`/PaymentLink/Update-PodcastPaymentLink/${links.id}`, formData);
 
         alert("Podcast link updated!");
     };
@@ -75,10 +70,7 @@ export default function PaymentLink() {
         const formData = new FormData();
         formData.append("StudioPaymentLink", studio);
 
-        await fetch(`http://localhost:5173/api/PaymentLink/Update-StudioPaymentLink/${links.id}`, {
-            method: "PUT",
-            body: formData,
-        });
+        await api.putForm(`/PaymentLink/Update-StudioPaymentLink/${links.id}`, formData);
 
         alert("Studio link updated!");
     };
@@ -98,9 +90,7 @@ export default function PaymentLink() {
                 <div className="bg-[#111] p-8 rounded-2xl shadow-xl w-full max-w-3xl border border-[#1f1f1f]">
                     <h1 className="text-3xl font-bold text-center mb-10">Payment Links</h1>
 
-                    {/* -------------------------------------------------------
-                       MODE 1 → NO PAYMENT LINKS IN DATABASE
-                    -------------------------------------------------------- */}
+                    
                     {!links && (
                         <div className="text-center">
                             <h2 className="text-xl font-semibold mb-6">Create Your Payment Links</h2>
@@ -131,9 +121,8 @@ export default function PaymentLink() {
                     </div>
                 )}
 
-                {/* -------------------------------------------------------
-                   MODE 2 → LINKS EXIST → UPDATE UI
-                -------------------------------------------------------- */}
+            
+            
                 {links && (
                     <>
                         {/* Podcast update */}

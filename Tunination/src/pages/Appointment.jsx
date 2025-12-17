@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
 
 export default function Appointment() {
   // State variables
@@ -30,15 +31,7 @@ export default function Appointment() {
     formData.append("Notes", notes);
 
     try {
-      const res = await fetch(
-        "http://localhost:5173/api/Appointment/Book-Appointment",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await res.json();
+      const res = await api.post("/Appointment/Book-Appointment", formData);
 
       if (!res.ok) {
         alert("Failed to book appointment");
@@ -46,7 +39,7 @@ export default function Appointment() {
       }
 
       alert("Appointment booked successfully!");
-      console.log("Created Appointment:", data);
+      console.log("Created Appointment:", res.data);
       navigate("/userdashboard");
 
     } catch (err) {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../component/Navbar";
-
+import api from "../api/axios";
 export default function Login({ onLogin }) {
   const navigate = useNavigate();
 
@@ -25,13 +25,9 @@ const handleLogin = async (e) => {
   console.log("LOGIN FORM DATA:", form);
 
   try {
-    const res = await fetch("http://localhost:5173/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
 
-    const data = await res.json();
+    const res = await api.post("/Auth/login", form);
+    const data = res.data;
     console.log("LOGIN RESPONSE:", data);
 
     if (!data.success) {
@@ -44,6 +40,7 @@ const handleLogin = async (e) => {
       userId: data.userId,
       fullName: data.userName,
       role: data.role,
+      email: data.email,
     };
 
     localStorage.setItem("user", JSON.stringify(userInfo));

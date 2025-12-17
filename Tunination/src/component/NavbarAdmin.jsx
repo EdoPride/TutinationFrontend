@@ -25,8 +25,7 @@ export default function NavbarAdmin() {
   const menu = [
      { name: "Home", path: "/" },
     { name: "Events", path: "/events" },
-    { name: "Appointment", path: "/appointment" },
-    { name: "Ticket", path: "/ticket" },
+    { name: "Admin Dashboard", path: "/admindashboard" },
   
   ];
 
@@ -35,7 +34,7 @@ export default function NavbarAdmin() {
       <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-6 text-white">
 
         {/* Logo */}
-        <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/admin-dashboard")}>
+        <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/")}>
           <img src={Logo} className="h-10 w-10 rounded-full border border-[#880404]" />
           <span className="text-xl font-bold tracking-wide">DtNation Admin</span>
         </div>

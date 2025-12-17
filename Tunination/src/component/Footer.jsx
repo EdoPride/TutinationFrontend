@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
 
 export default function Footer() {
     return (
@@ -28,9 +28,11 @@ export default function Footer() {
                 <div>
                     <h3 className="text-xl font-semibold mb-3">Follow Us</h3>
                     <div className="flex items-center gap-6 text-2xl">
-                        <a href="#" className="hover:text-red-500 transition"><FaInstagram /></a>
-                        <a href="#" className="hover:text-red-500 transition"><FaTiktok /></a>
-                        <a href="#" className="hover:text-red-500 transition"><FaYoutube /></a>
+                        <a href="https://www.instagram.com/ojbrown_7bg?igsh=MXN4MzV6bGE2NGx3MA%3D%3D&utm_source=qr" className="hover:text-red-500 transition"><FaInstagram /></a>
+                        <a href="https://www.tiktok.com/@ojbrown_dtn?_r=1&_t=ZG-92FmzPGhbqi" className="hover:text-red-500 transition"><FaTiktok /></a>
+                        <a href="https://www.youtube.com/@ojbrown_dtn" className="hover:text-red-500 transition"><FaYoutube /></a>
+                        <a href="https://www.facebook.com/share/1DU683yopn/?mibextid=wwXIfr" className="hover:text-red-500 transition"><FaFacebook /></a>
+
                     </div>
                 </div>
             </div>

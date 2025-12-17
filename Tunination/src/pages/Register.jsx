@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import{useNavigate} from "react-router-dom";
-
+import api from "../api/axios";
 export default function Register() {
   const [form, setForm] = useState({
     fullName: "",
@@ -42,14 +42,8 @@ export default function Register() {
     };
 
     try {
-      const res = await fetch("http://localhost:5173/api/Auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-
-      });
-
-      const data = await res.json();
+      const res = await api.post("/Auth/register", payload);
+      const data = res.data;
       console.log("REGISTER RESULT:", data);
 
       alert("Registration Successful!");

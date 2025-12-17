@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import api from "../api/axios";
 export default function AppointmentOverview() {
   const [appointments, setAppointments] = useState([]);
   const [activeTab, setActiveTab] = useState("pending");
@@ -13,9 +13,8 @@ export default function AppointmentOverview() {
   const loadAppointments = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5173/api/Appointment/Appointment-Table");
-      const data = await res.json();
-      setAppointments(data);
+      const res = await api.get("/Appointment/Appointment-Table");
+      setAppointments(res.data);
     } catch (err) {
       console.error("Error fetching appointments:", err);
     }
@@ -24,27 +23,22 @@ export default function AppointmentOverview() {
 
   // Accept appointment
   const acceptAppointment = async (id) => {
-    await fetch(`http://localhost:5173/api/Appointment/Accept-Appointment/${id}`, {
-      method: "POST",
-    });
+    await api.post(`/Appointment/Accept-Appointment/${id}`);
+    
 
     loadAppointments();
   };
 
   // Reject appointment
   const rejectAppointment = async (id) => {
-    await fetch(`http://localhost:5173/api/Appointment/Reject-Appointment/${id}`, {
-      method: "POST",
-    });
+    await api.post(`/Appointment/Reject-Appointment/${id}`);
 
     loadAppointments();
   };
 
   // Delete appointment
   const deleteAppointment = async (id) => {
-    await fetch(`http://localhost:5173/api/Appointment/Delete-Appointment/${id}`, {
-      method: "POST",
-    });
+    await api.post(`/Appointment/Delete-Appointment/${id}`);
 
     loadAppointments();
   };

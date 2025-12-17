@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import api from "../api/axios";
 export default function Events() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -8,9 +8,7 @@ const handleDelete = async (eventId) => {
     if (!window.confirm("Are you sure you want to delete this event?")) return;
 
     try {
-        const res = await fetch(`http://localhost:5173/api/Events/Delete-Event/${eventId}`, {
-            method: "POST",
-        });
+        const res = await api.post(`/Events/Delete-Event/${eventId}`);
 
         if (!res.ok) {
             alert("Failed to delete event.");
@@ -29,16 +27,18 @@ const handleDelete = async (eventId) => {
 };
 
   useEffect(() => {
-    fetch("http://localhost:5173/api/Events/All-Events")
-      .then((res) => res.json())
-      .then((data) => {
-        setEvents(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+    const fetchEvents = async () => {
+      try {
+        const res = await api.get("/Events/All-Events");
+        setEvents(res.data);
+      } catch (err) {
         console.error("Error fetching events:", err);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchEvents();
   }, []);
 
   if (loading) {

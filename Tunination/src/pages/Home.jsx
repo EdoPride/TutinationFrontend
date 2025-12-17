@@ -13,16 +13,28 @@ import Navbar from "../component/Navbar";
 import NavbarUser from "../component/NavbarUser";
 import NavbarAdmin from "../component/NavbarAdmin";
 export default function Home() {
+  const user = JSON.parse(localStorage.getItem("user"));
+const isLoggedIn = !!user;
+
+const dashboardLink =
+  user?.role === "Admin"
+    ? "/admindashboard"
+    : "/userdashboard";
+
   const slides = [
-    {
+  {
       type: "video",
       src: LogoWavy,
       title: "Daddytutination",
       subtitle: "The pride of entertainment",
-      buttons: [
-        { text: "Login", link: "/login" },
-        { text: "Sign Up", link: "/register" },
-      ],
+      buttons: isLoggedIn
+        ? [
+            { text: "Go to Dashboard", link: dashboardLink },
+          ]
+        : [
+            { text: "Login", link: "/login" },
+            { text: "Sign Up", link: "/register" },
+          ],
     },
     {
       type: "video",

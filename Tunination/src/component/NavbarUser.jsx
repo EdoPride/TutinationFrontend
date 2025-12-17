@@ -110,7 +110,7 @@ export default function NavbarUser() {
 
             {/* User Name */}
             {user && (
-              <p className="italic text-sm">Logged in as: {user.name}</p>
+              <p className="italic text-sm" onClick={()=> navigate("/userdashboard")}>Logged in as: {user.name}</p>
             )}
 
             {/* Logout */}

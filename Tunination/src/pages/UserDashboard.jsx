@@ -1,86 +1,120 @@
 import React, { useEffect, useState } from "react";
-import NavbarUser from "../component/NavbarUser";   
+import NavbarUser from "../component/NavbarUser";
+import api from "../api/axios";
 export default function UserDashboard() {
   const [user, setUser] = useState(null);
-useEffect(() => {
-  const saved = localStorage.getItem("user");
-  if (saved) setUser(JSON.parse(saved));
-}, []);
+  const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
+  // Load user from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("user");
+    if (saved) setUser(JSON.parse(saved));
+  }, []);
+
+  if (!user) return null;
+
+
+  const updateEmail = async () => {
+    const formData = new FormData();
+    formData.append("userId", user.userId);
+    formData.append("email", email);
+
+    await api.putForm("/Auth/change-email", formData);
+
+    alert("Email updated successfully");
+  };
+
+
+  const updatePassword = async () => {
+    const formData = new FormData();
+    formData.append("userId", user.userId);
+    formData.append("newPassword", newPassword);
+
+    await api.putForm("/Auth/change-password", formData);
+
+    alert("Password updated successfully");
+  };
 
   return (
     <>
       <NavbarUser />
-      <div className="min-h-screen bg-[#000b0b] text-white px-6 pt-24 pb-10">
 
-        {/* Greeting Section */}
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold">
-            Welcome Back,{" "}
-            <span className="text-red-500">
-              {user?.fullName || "User"}
-            </span>
-          </h1>
-        <p className="text-gray-400 mt-2">Here’s your dashboard overview.</p>
+      <div className="min-h-screen bg-[#0b0b0b] text-white px-6 py-14">
+        <div className="max-w-2xl mx-auto space-y-8">
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-          <div className="bg-[#151515] p-6 rounded-xl shadow-lg border border-[#242424]">
-            <h2 className="text-lg text-gray-300">Active Appointments</h2>
-            <p className="text-3xl font-bold mt-3 text-red-500">3</p>
-          </div>
-
-          <div className="bg-[#151515] p-6 rounded-xl shadow-lg border border-[#242424]">
-            <h2 className="text-lg text-gray-300">Messages</h2>
-            <p className="text-3xl font-bold mt-3 text-red-500">12</p>
-          </div>
-
-          <div className="bg-[#151515] p-6 rounded-xl shadow-lg border border-[#242424]">
-            <h2 className="text-lg text-gray-300">Pending Tickets</h2>
-            <p className="text-3xl font-bold mt-3 text-red-500">1</p>
-          </div>
-        </div>
-
-        {/* Activity Feed */}
-        <div className="bg-[#151515] mt-12 p-6 rounded-xl shadow-lg border border-[#242424]">
-          <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
-
-          <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-[#242424] pb-3">
-              <p className="text-gray-300">You booked a new appointment</p>
-              <span className="text-sm text-gray-500">2 hours ago</span>
-            </div>
-
-            <div className="flex items-center justify-between border-b border-[#242424] pb-3">
-              <p className="text-gray-300">Your ticket #104 was updated</p>
-              <span className="text-sm text-gray-500">1 day ago</span>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <p className="text-gray-300">You viewed new events</p>
-              <span className="text-sm text-gray-500">3 days ago</span>
-            </div>
-          </div>
-        </div>
-
-        {/* User Info */}
-        <div className="bg-[#151515] mt-12 p-6 rounded-xl shadow-lg border border-[#242424]">
-          <h2 className="text-xl font-bold mb-4">Account Information</h2>
-
-          <div className="space-y-3">
-            <p>
-              <span className="text-gray-400">Full Name:</span>{" "}
-              {user?.fullName}
+          {/* Header */}
+          <div>
+            <h1 className="text-3xl font-semibold">Account Settings</h1>
+            <p className="text-gray-400 mt-1">
+              Manage your personal information & security
             </p>
-            <p>
-              <span className="text-gray-400">User ID:</span>{" "}
-              {user?.userId}
-            </p>
-           
           </div>
+
+          {/* Profile */}
+          <div className="bg-linear-to-br from-[#151515] to-[#0f0f0f]
+                          border border-[#242424] rounded-2xl p-6">
+            <h2 className="text-lg font-medium mb-4">Profile</h2>
+
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-400">Full Name</span>
+              <span>{user.fullName}</span>
+            </div>
+
+            <div className="flex justify-between text-sm mt-2">
+              <span className="text-gray-400">User ID</span>
+              <span>{user.userId}</span>
+            </div>
+          </div>
+
+          {/* Change Email */}
+          <div className="bg-[#151515] border border-[#242424] rounded-2xl p-6">
+            <h2 className="text-lg font-medium mb-4">Change Email</h2>
+
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter new email"
+              className="w-full bg-[#0b0b0b] border border-[#242424]
+                         rounded-lg px-4 py-3 mb-4
+                         focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+
+            <button
+              onClick={updateEmail}
+              className="w-full bg-red-600 hover:bg-red-700
+                         transition rounded-lg py-3 font-medium"
+            >
+              Update Email
+            </button>
+          </div>
+
+          {/* Change Password */}
+          <div className="bg-[#151515] border border-[#242424] rounded-2xl p-6">
+            <h2 className="text-lg font-medium mb-4">Change Password</h2>
+
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Enter new password"
+              className="w-full bg-[#0b0b0b] border border-[#242424]
+                         rounded-lg px-4 py-3 mb-4
+                         focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+
+            <button
+              onClick={updatePassword}
+              className="w-full bg-red-600 hover:bg-red-700
+                         transition rounded-lg py-3 font-medium"
+            >
+              Update Password
+            </button>
+          </div>
+
         </div>
       </div>
-    </div>
     </>
   );
 }

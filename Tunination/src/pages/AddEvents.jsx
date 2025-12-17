@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import api from "../api/axios";
 export default function AddEvents() {
   const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ export default function AddEvents() {
     });
 
     try {
-      const res = await fetch("http://localhost:5173/api/Events/add", {
+      const res = await api.post("https://figure-cartoons-isle-relief.trycloudflare.com/api/Events/add", {
         method: "POST",
         body: eventData,
       });
