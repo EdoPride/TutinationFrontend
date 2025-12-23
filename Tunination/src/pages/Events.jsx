@@ -1,30 +1,52 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/axios";
+import { useNavigate } from "react-router-dom";
+
 export default function Events() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
  const user = JSON.parse(localStorage.getItem("user"));
-const handleDelete = async (eventId) => {
+  const navigate = useNavigate();
+
+  const handleDelete = async (eventId) => {
     if (!window.confirm("Are you sure you want to delete this event?")) return;
 
     try {
-        const res = await api.post(`/Events/Delete-Event/${eventId}`);
+      const res = await api.delete(`/Events/delete/${eventId}`);
 
-        if (!res.ok) {
-            alert("Failed to delete event.");
-            return;
-        }
-
-        alert("Event deleted!");
-
-        // Remove from UI without refresh
-        setEvents(events.filter(ev => ev.eventID !== eventId));
-
-    } catch (err) {
-        console.error("Delete error:", err);
-        alert("Something went wrong.");
+      if (res.status !== 200) {
+        alert("Failed to delete event.");
+      return;
     }
+
+    alert("Event deleted!");
+
+    // Remove from UI without refresh
+    setEvents(events.filter((ev) => ev.eventID !== eventId));
+  } catch (err) {
+    console.error("Delete error:", err);
+    alert("Something went wrong.");
+  }
 };
+ const handlePurchase = (event) => {
+    if (!event.paymentLink) {
+      alert("No payment link available.");
+      return;
+    }
+
+    // Save event info for confirmation page
+    localStorage.setItem(
+      "pendingPaymentEvent",
+      JSON.stringify(event)
+    );
+
+    // Open payment link
+    window.open(event.paymentLink, "_blank");
+
+    // Redirect to confirmation page
+    navigate("/payment-confirmation");
+  };
+
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -98,7 +120,9 @@ const handleDelete = async (eventId) => {
               €{ev.price}
             </p>
 
-            <button  className="mt-2 w-full bg-[#b91c1c] hover:bg-[#991b1b] 
+            <button onClick={() => {
+              handlePurchase(ev);
+            }} className="mt-2 w-full bg-[#b91c1c] hover:bg-[#991b1b] 
                text-white rounded-lg py-2 font-semibold transition-all"
   >
               Purchase Ticket
