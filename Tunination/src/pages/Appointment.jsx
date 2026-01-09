@@ -14,39 +14,46 @@ export default function Appointment() {
   // Get logged in user
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!user) {
-      alert("You must be logged in to book an appointment.");
+  if (!user) {
+    alert("You must be logged in to book an appointment.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("UserId", user.userId);
+  formData.append("AppointmentDate", appointmentDate);
+  formData.append("StartTime", startTime);
+  formData.append("EndTime", endTime);
+  formData.append("ServiceType", serviceType);
+  formData.append("Notes", notes);
+
+  try {
+    const res = await api.post(
+      "/Appointment/Book-Appointment",
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    console.log("API response:", res.data);
+    console.log("Status code:", res.status);
+    console.log("Full response:", res.data);
+    if (res.status === 200) {
+      alert("Appointment booked successfully!");
+      navigate("/userdashboard");
+    } else {
+      alert("Failed to book appointment");
       return;
     }
-
-    const formData = new FormData();
-    formData.append("UserId", user.userId);
-    formData.append("AppointmentDate", appointmentDate);
-    formData.append("StartTime", startTime);
-    formData.append("EndTime", endTime);
-    formData.append("ServiceType", serviceType);
-    formData.append("Notes", notes);
-
-    try {
-      const res = await api.post("/Appointment/Book-Appointment", formData);
-
-      if (!res.ok) {
-        alert("Failed to book appointment");
-        return;
-      }
-
-      alert("Appointment booked successfully!");
-      console.log("Created Appointment:", res.data);
-      navigate("/userdashboard");
-
-    } catch (err) {
-      console.error("Error booking appointment:", err);
-      alert("Something went wrong.");
-    }
-  };
+   
+   
+  } catch (err) {
+    console.error("Error booking appointment:", err);
+    alert("Something went wrong.");
+  }
+};
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4 py-12">
